@@ -21,10 +21,12 @@ spec:
   - name: aws-secrets-manager
     image: jicowan/jicowan_aws-secrets-manager:v0.3
     env:
-      - name: AWS_REGION
-        value: "us-east-1"
-      - name: SECRET_NAME
-        value: "catsndogs"
+      - name: AZURE_VAULT_NAME
+        value: "secretsidecar"
+      - name: AZURE_SECRET_NAME
+        value: "mysecret"
+      - name: AZURE_CLIENT_ID
+        value: "<ClientID>"
     volumeMounts:
       - name: vol
         mountPath: /tmp

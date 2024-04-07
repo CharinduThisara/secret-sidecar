@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
@@ -11,11 +12,12 @@ import (
 
 func fetchAzureSecret() (string, error) {
 	// Azure Key Vault configuration
-	// vaultName := os.Getenv("AZURE_VAULT_NAME")
-	// secretName := os.Getenv("AZURE_SECRET_NAME")
+	vaultName := os.Getenv("AZURE_VAULT_NAME")
+	secretName := os.Getenv("AZURE_SECRET_NAME")
 
-	vaultName := "secretsidecar"
-	secretName := "mysecret"
+	if vaultName == "" || secretName == "" {
+		return "", fmt.Errorf("AZURE_VAULT_NAME and AZURE_SECRET_NAME must be set")
+	}
 
 	vaultURI := fmt.Sprintf("https://%s.vault.azure.net", vaultName)
 
@@ -39,8 +41,6 @@ func fetchAzureSecret() (string, error) {
 		log.Fatalf("failed to get the secret: %v", err)
 		return "", err
 	}
-
-	fmt.Printf("secretValue: %s\n", *resp.Value)
 
 	return *resp.Value, nil
 
