@@ -4,7 +4,7 @@ RUN apk add --update --no-cache git
 WORKDIR /src/secrets-manager
 COPY . ./
 RUN go mod download
-RUN go build -o /app -v ./cmd/Secrets-manager
+RUN go build -o /app -v ./cmd/secrets-manager
 
 FROM alpine
 RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
