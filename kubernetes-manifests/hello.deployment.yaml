@@ -17,7 +17,7 @@ spec:
       - name: vol
         mountPath: /tmp
   initContainers:
-  - name: aws-secrets-manager
+  - name: secrets-manager
     image: jicowan/jicowan_aws-secrets-manager:v0.3
     env:
       - name: AZURE_VAULT_NAME
