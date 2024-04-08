@@ -11,8 +11,8 @@ spec:
       emptyDir:
         medium: Memory
     - name: identity-server-conf
-        configMap:
-          name: identity-server-conf
+      configMap:
+        name: identity-server-conf
   containers:
   - name: is-7
     image: acrasgardeomainrnd001.azurecr.io/is7.0:latest
