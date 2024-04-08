@@ -16,6 +16,14 @@ spec:
   containers:
   - name: is-7
     image: acrasgardeomainrnd001.azurecr.io/is7.0:latest
+    imagePullPolicy: Always
+          ports:
+            - containerPort: 9443
+          env:
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
     volumeMounts:
       - name: vol
         mountPath: /home/wso2carbon/wso2is-7.0.0
