@@ -32,7 +32,7 @@ spec:
         subPath: deployment-toml
   initContainers:
   - name: secrets-manager
-    image: acrasgardeomainrnd001.azurecr.io/secret-sidecar:latest
+    image: acrasgardeomainrnd001.azurecr.io/secret-sidecar:east
     env:
       - name: AZURE_VAULT_NAME
         value: "secretsidecar"

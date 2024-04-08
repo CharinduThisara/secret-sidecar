@@ -2,7 +2,7 @@
 
 # Define variables
 DOCKER_IMAGE_NAME="secret-sidecar"
-DOCKER_IMAGE_TAG="latest"
+DOCKER_IMAGE_TAG="east"
 
 ACR_NAME="acrasgardeomainrnd001.azurecr.io"
 
