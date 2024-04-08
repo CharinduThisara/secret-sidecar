@@ -16,10 +16,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: identity-server-conf
-  namespace : {{ .Values.Namespace }}
-  
-{{ if .Values.wso2.deployment.wso2is.config }}
-
+  namespace : secret-sidecar
 data:
   deployment.toml: |-
     # Deployment config for Identity Server deployment
@@ -126,4 +123,3 @@ data:
     truststrore_password    = "khCvoV5uISqw/e83BIAuPmPnrm50dc7Zx3mSC0Fob+OkzyorXKMWrEOLn4LwfIJgLGFje40ynBKLQq7Por5mtytzKRK+LvLDdd0Ic3r2feqyFqgfUwVyQ6tzdAnnHuV4jx7uFFqqBImkdrFYWvz+u0NRnYhjrNoxtQIwittGdnQEf9gY+ukJ1cFDmzvgVmms6VJhrFOJvTjOk0396vhf8GdXLOP+YXx8bq8N/UuJ05NVyImAPT7inJLty9gNIt2TP77Y/1wwZEVPyR+XioaMmovy+B6qNQYs+6jFZ8LrEs80awtW/nkeXFD/Nwb0saw46My7mAFV4HIWmWP5Io/t0A=="
     "log4j.appender.LOGEVENT.password"    = "SaRRLrQ7th122/E0Kx6ISgP+T0eupR39Zd8GaydUlpLAtvIsRGkoBxTDXyHghSiF8SzfJYaY8if3A75Nf8Rz4Y/xTpw2py/lTY3SCIh9ETrv9hKdKwxDmFBxXi0tfwTLTKbW8gsXCYaQQPY9c/6ZnnVw+obDICT808Krk2jTAbIzBFcC6O8PKSv9DrLiD7CWgyqgbe0Q8fDwoJERBItvrMrzwzeK49pxdzJ2l3mOoVEUWIyR3U1O/Uq8sbiNBglfB3vWTjXYzASxL4j9Ojx9Qhl2fO3XgpaQcj7AMEG4IT2SdcqxsGjmSdO8P2IhzukrA/KiimVBEdldOPCNcCE85Q=="
 
-{{- end }}
