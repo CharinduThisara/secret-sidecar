@@ -1,0 +1,129 @@
+# Copyright (c) 2018, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: identity-server-conf
+  namespace : {{ .Values.Namespace }}
+  
+{{ if .Values.wso2.deployment.wso2is.config }}
+
+data:
+  deployment.toml: |-
+    # Deployment config for Identity Server deployment
+    [server]
+    hostname = "wso2-is.trafficmanager.net"
+    node_ip = "$env{NODE_IP}"
+    base_path = "https://$ref{server.hostname}:${carbon.management.port}"
+    force_local_cache = true
+
+    [super_admin] 
+    username = "admin"
+    password = "$secret{admin_password}"
+    create_admin_account = true
+
+    [user_store]
+    type = "database_unique_id"
+
+    [database.identity_db]
+    type = "mssql"
+    url = "jdbc:sqlserver://is-mssql-server-primary.database.windows.net:1433;databaseName=ismssqldbprimary"
+    username = "regadmin"
+    password = "nimdager@123"
+
+    [database.shared_db]
+    type = "mssql"
+    url = "jdbc:sqlserver://is-mssql-server-primary.database.windows.net:1433;databaseName=ismssqldbprimary"
+    username = "regadmin"
+    password = "nimdager@123"
+
+    [database.identity_db.pool_options]
+    maxActive = "80"
+    maxWait = "360000"
+    minIdle ="5"
+    testOnBorrow = true
+    validationQuery="SELECT 1"
+    validationInterval="30000"
+    defaultAutoCommit = false
+    commitOnReturn = true
+
+    [database.shared_db.pool_options]
+    maxActive = "80"
+    maxWait = "360000"
+    minIdle ="5"
+    testOnBorrow = true
+    validationQuery="SELECT 1"
+    validationInterval="30000"
+    defaultAutoCommit = false
+    commitOnReturn = true
+
+    [clustering]
+    membership_scheme = "kubernetes"
+    domain = "wso2.carbon.domain"
+
+    [clustering.properties]
+    membershipSchemeClassName = "org.wso2.carbon.membership.scheme.kubernetes.KubernetesMembershipScheme"
+    KUBERNETES_NAMESPACE = "wso2is"
+    KUBERNETES_SERVICES = "identity-service"
+    KUBERNETES_MASTER_SKIP_SSL_VERIFICATION = true
+    USE_DNS = false
+
+    [hazelcast]
+    "hazelcast.shutdownhook.enabled" = "false"
+    "hazelcast.logging.type"= "log4j2"
+    
+    [keystore.primary]
+    file_name = "wso2carbon.jks"
+    password = "wso2carbon"
+
+    [truststore]
+    file_name="client-truststore.jks"
+    password="$secret{truststrore_password}" 
+    type="JKS"
+
+    [account_recovery.endpoint.auth]
+    hash= "66cd9688a2ae068244ea01e70f0e230f5623b7fa4cdecb65070a09ec06452262"
+
+    [identity.auth_framework.endpoint]
+    app_password= "dashboard"
+
+    [cors]
+    allow_generic_http_requests = true
+    allow_any_origin = true
+    allow_subdomains = true
+    supported_methods = [
+    "GET",
+    "POST",
+    "HEAD",
+    "OPTIONS"
+    ]
+    support_any_header = true
+    supported_headers = []
+    exposed_headers = []
+    supports_credentials = true
+    max_age = 3600
+    tag_requests = false
+
+    [identity_mgt.user_self_registration]
+    callback_url = "${carbon.protocol}:\\/\\/${carbon.host}\\/.*" 
+
+    [secrets]
+    admin_password   = "aNCD4xW13wG4Kq7X83vZD5UnI18lKjfHrsZEZG77B6Kkcoej1z/2HPPn63lzcsiDjhIZoAW8XbNRW2PCQwiJb56YoSJ9i2mP5Yt0RyvwGr8E6yDnkkcccdMTVSrpgf6l/rKIKuKop0F8PVoKhb4qBEm9bz7uKs6VT7nXwayujYSg12dQjuRxsaRAbGLx8snX8EJrqkCac9mJnmQXkR4cLd1yujODpC5OmE7Ya37pd79heNuO8C/tnQtH42NoBMMSELsMee3CQ7z7DJTLfopBrxQ2EU1xh6tnHTfYtOyNN663cC+dTdviIS9xX9RVbDu2GBhlvUvRF2ZVSRh8tG0Xhw=="
+    keystore_password   = "QERUdgJ+aaTi2GGVRgyNgy9hyjuLfOlgW8rTIxTV7roDjhzMXzqn+NqLD/SC2ZFUZEqHQ3xXr1lsDCw6zOPw4Q33PLR9Hslh/58q0tQ1xnDTEBC+f8IAdNnYXwmOMfo4F4D6XEdbNUPKT5xAk3RmBfsY99LIfRlYkr0biZ5Htzol45OFvZlKxMQ3XeHkPfjWrVIwzP4wxzrbfpRMJqzMTpmJ9xSQ1XzNIJpXA+TuBJ0U9gq+5vz899bO6QIQZCkyS4HQu7aBgQB4rt0bDiuIF0m/MAhEmCn2LHvia/beISN6J4MoK/Z+zpIXNcY4N/4GNhZzbCBRDHTyfVqjkQuSDQ=="
+    key_password    = "fGu8goYJq9ezt2wxcB5awKbYyi5HzJbvFePht1hdYrXmhHA9dSBnL4t07ou0oW6JHeVB1+21WuBXeZZV64N8fvmc41WpxdhGhhwoaedMcNsP5bYJDmSdDf9re0IMKl66GY9ZHPrmADZEtpcq3/O4IaLgXNvAesXIbTggsfGDqWOMwGLtCWnpvswnVb9LkLPXvmKj9eHTZjgTp0H+qJtlp/5JGe9kU0rmo6haxJ4KP39X2HHq7DJUUeiD/sTSG5sbrBA99yPZlXyqzvClohuGed3Tj1jHyUYwmDtzqtbYzvUg86ikm6gvUML8xhrmPmEAMNhLmDZcjatzVL2zkBllbw=="
+    truststrore_password    = "khCvoV5uISqw/e83BIAuPmPnrm50dc7Zx3mSC0Fob+OkzyorXKMWrEOLn4LwfIJgLGFje40ynBKLQq7Por5mtytzKRK+LvLDdd0Ic3r2feqyFqgfUwVyQ6tzdAnnHuV4jx7uFFqqBImkdrFYWvz+u0NRnYhjrNoxtQIwittGdnQEf9gY+ukJ1cFDmzvgVmms6VJhrFOJvTjOk0396vhf8GdXLOP+YXx8bq8N/UuJ05NVyImAPT7inJLty9gNIt2TP77Y/1wwZEVPyR+XioaMmovy+B6qNQYs+6jFZ8LrEs80awtW/nkeXFD/Nwb0saw46My7mAFV4HIWmWP5Io/t0A=="
+    "log4j.appender.LOGEVENT.password"    = "SaRRLrQ7th122/E0Kx6ISgP+T0eupR39Zd8GaydUlpLAtvIsRGkoBxTDXyHghSiF8SzfJYaY8if3A75Nf8Rz4Y/xTpw2py/lTY3SCIh9ETrv9hKdKwxDmFBxXi0tfwTLTKbW8gsXCYaQQPY9c/6ZnnVw+obDICT808Krk2jTAbIzBFcC6O8PKSv9DrLiD7CWgyqgbe0Q8fDwoJERBItvrMrzwzeK49pxdzJ2l3mOoVEUWIyR3U1O/Uq8sbiNBglfB3vWTjXYzASxL4j9Ojx9Qhl2fO3XgpaQcj7AMEG4IT2SdcqxsGjmSdO8P2IhzukrA/KiimVBEdldOPCNcCE85Q=="
+
+{{- end }}

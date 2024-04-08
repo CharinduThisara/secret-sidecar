@@ -46,12 +46,12 @@ func main() {
 }
 
 func writeOutput(output string) {
-	f, err := os.Create("/tmp/secret")
+	f, err := os.Create("/home/wso2carbon/wso2is-7.0.0/password-tmp")
 	if err != nil {
 		return
 	}
 	defer f.Close()
 
 	f.WriteString(output)
-	fmt.Println("Secret successfully fetched and saved to /tmp/secret")
+	fmt.Println("Secret successfully fetched and saved to /home/wso2carbon/wso2is-7.0.0/password-tmp")
 }
