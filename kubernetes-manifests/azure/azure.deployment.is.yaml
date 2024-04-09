@@ -4,6 +4,7 @@ metadata:
   name: myapp-pod
   namespace: secret-sidecar
   labels:
+    azure.workload.identity/use: "true"
     app: myapp
 spec:
   volumes:
@@ -38,8 +39,6 @@ spec:
         value: "secretsidecar"
       - name: AZURE_SECRET_NAME
         value: "mysecret"
-      - name: AZURE_CLIENT_ID
-        value: "<ClientID>"
     volumeMounts:
       - name: vol
         mountPath: /home/wso2carbon/wso2is-7.0.0
