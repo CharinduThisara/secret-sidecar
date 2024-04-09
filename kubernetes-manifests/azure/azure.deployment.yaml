@@ -14,10 +14,10 @@ spec:
   containers:
   - name: myapp-container
     image: busybox:1.28
-    command: ['sh', '-c', 'echo $(cat /tmp/secret) && sleep 3600']
+    command: ['sh', '-c', 'echo $(cat /home/wso2carbon/wso2is-7.0.0/password-tmp) && sleep 3600']
     volumeMounts:
       - name: vol
-        mountPath: /tmp
+        mountPath: /home/wso2carbon/wso2is-7.0.0
   initContainers:
   - name: secrets-manager
     image: acrasgardeomainrnd001.azurecr.io/secret-sidecar:latest
@@ -28,4 +28,4 @@ spec:
         value: "mysecret"
     volumeMounts:
       - name: vol
-        mountPath: /tmp
+        mountPath: /home/wso2carbon/wso2is-7.0.0
