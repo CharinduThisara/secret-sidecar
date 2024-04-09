@@ -6,6 +6,7 @@ metadata:
   labels:
     app: myapp
 spec:
+  serviceAccountName: secret-sidecar-sa
   volumes:
     - name: vol
       emptyDir:
@@ -25,8 +26,6 @@ spec:
         value: "secretsidecar"
       - name: AZURE_SECRET_NAME
         value: "mysecret"
-      - name: AZURE_CLIENT_ID
-        value: "<ClientID>"
     volumeMounts:
       - name: vol
         mountPath: /tmp
