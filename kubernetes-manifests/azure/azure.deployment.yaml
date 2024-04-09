@@ -4,6 +4,7 @@ metadata:
   name: myapp-pod
   namespace: secret-sidecar
   labels:
+    azure.workload.identity/use: "true"
     app: myapp
 spec:
   serviceAccountName: secret-sidecar-sa
@@ -20,7 +21,7 @@ spec:
         mountPath: /home/wso2carbon/wso2is-7.0.0
   initContainers:
   - name: secrets-manager
-    image: acrasgardeomainrnd001.azurecr.io/secret-sidecar:latest
+    image: acrasgardeomainrnd001.azurecr.io/secret-sidecar:east
     env:
       - name: AZURE_VAULT_NAME
         value: "secretsidecar"
